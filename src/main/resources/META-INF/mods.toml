@@ -1,16 +1,16 @@
 modLoader="javafml"
 loaderVersion="[40,)"
-license="All Rights Reserved"
+license="GNU GENERAL PUBLIC LICENSE"
 
 [[mods]]
 modId="epicdragonfight"
-version="0.2-Beta"
-displayName="EpicDragonFight"
+version="1.0.0"
+displayName="EpicFight DragonEye Fix"
 credits="..."
 displayURL=""
 authors="SuSen36"
 description='''
-    EpicFight Dragon Patched!
+   Let the enderdragon eye in the EpicFight shine!
 '''
 
 [[dependencies.epicdragonfight]]
@@ -31,6 +31,6 @@ description='''
 [[dependencies.epicdragonfight]]
     modId="epicfight"
     mandatory=true
-    versionRange="[1.0.0,)"
+    versionRange="[16.6.1,)"
     ordering="AFTER"
     side="BOTH"

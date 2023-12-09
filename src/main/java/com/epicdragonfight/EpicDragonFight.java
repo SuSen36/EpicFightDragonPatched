@@ -13,9 +13,4 @@ public class EpicDragonFight {
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "epicdragonfight";
 
-
-
-
-
-
 }
