@@ -18,9 +18,9 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '19.5.19'
+version = '1.0.0'
 group = 'com.susen36.epicdragonfight'
-archivesBaseName = 'epicdragonfight'
+archivesBaseName = 'EpicFight DragonEye Fix'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
@@ -119,9 +119,9 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.3.5'
     
     //implementation fg.deobf("curse.maven:mantle-74924:3829975")
-    implementation fg.deobf("curse.maven:geckolib-388172:4407241")
-    //implementation fg.deobf("local:epicsamurai:0.0.2")
-    
+    implementation fg.deobf("curse.maven:epicfight-405076:4922089")
+    runtimeOnly fg.deobf("curse.maven:epic-epicfight-405076:4922089")
+
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
