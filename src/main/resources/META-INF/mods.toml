@@ -1,0 +1,33 @@
+modLoader="javafml" #mandatory
+loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="GNU GENERAL PUBLIC LICENSE"
+#issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+[[mods]] #mandatory
+modId="epicdragonfight" #mandatory
+version="1.0.0" #mandatory
+displayName="EpicFight DragonEye Fix" #mandatory
+#displayURL="https://www.curseforge.com/minecraft/mc-mods/epic-fight-mod" #optional
+#logoFile="epicfight.png" #optional
+#credits="METAL, SAGESSE" #optional
+#authors="Yesman" #optional
+description='''  Let the enderdragon eye in the EpicFight shine!
+'''
+
+[[dependencies.epicdragonfight]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[47.2.6,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.epicdragonfight]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20,1.21)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.epicdragonfight]]
+    modId="epicfight"
+    mandatory=true
+    versionRange="[20.5.15,)"
+    ordering="AFTER"
+    side="BOTH"
