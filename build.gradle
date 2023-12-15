@@ -18,8 +18,8 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 
-version = '1.0.0'
-group = 'com.susen36.epicdragonfight'
+version = '1.0.1'
+group = 'com.epicdragonfight'
 archivesBaseName = 'EpicFight DragonEye Fix'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -115,10 +115,10 @@ mixin {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.14'
 
-    implementation fg.deobf("curse.maven:epic-fight-405076:4018756")
-    runtimeOnly fg.deobf("curse.maven:epic-fight-405076:4018756")
+    implementation fg.deobf("curse.maven:epic-fight-405076:4922082")
+    runtimeOnly fg.deobf("curse.maven:epic-fight-405076:4922082")
 
     runtimeOnly fg.deobf("curse.maven:jei-238222:3884330")
 
@@ -128,12 +128,12 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "examplemod",
-                "Specification-Vendor"    : "examplemodsareus",
+                "Specification-Title"     : "epicdragonfight",
+                "Specification-Vendor"    : "susen36",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "examplemodsareus",
+                "Implementation-Vendor"   : "susen36",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "epicdragonfight.mixins.json"
         ])

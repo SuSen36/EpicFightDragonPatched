@@ -3,7 +3,7 @@
   "minVersion": "0.8",
   "package": "com.epicdragonfight.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "epicdragonfight.refmap.json",
+
   "mixins": [
   ],
   "client": [
@@ -11,5 +11,6 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "epicdragonfight.refmap.json"
 }

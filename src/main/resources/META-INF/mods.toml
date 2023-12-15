@@ -4,7 +4,7 @@ license="GNU GENERAL PUBLIC LICENSE"
 
 [[mods]]
 modId="epicdragonfight"
-version="1.0.0"
+version="1.0.1"
 displayName="EpicFight DragonEye Fix"
 credits="..."
 displayURL=""
@@ -16,7 +16,7 @@ description='''
 [[dependencies.epicdragonfight]]
    modId="forge"
    mandatory=true
-   versionRange="[40,)"
+   versionRange="[40.2.14,)"
    ordering="NONE"
    side="BOTH"
 
@@ -31,6 +31,6 @@ description='''
 [[dependencies.epicdragonfight]]
     modId="epicfight"
     mandatory=true
-    versionRange="[16.6.1,)"
+    versionRange="[18.5,)"
     ordering="AFTER"
     side="BOTH"

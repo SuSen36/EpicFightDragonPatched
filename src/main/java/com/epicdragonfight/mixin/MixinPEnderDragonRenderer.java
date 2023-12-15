@@ -20,10 +20,10 @@ import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import yesman.epicfight.api.animation.AnimationPlayer;
 import yesman.epicfight.api.client.animation.Layer;
-import yesman.epicfight.api.client.model.ClientModel;
-import yesman.epicfight.api.client.model.ClientModels;
 import yesman.epicfight.api.model.Armature;
 import yesman.epicfight.api.utils.math.OpenMatrix4f;
+import yesman.epicfight.api.utils.math.Vec3f;
+import yesman.epicfight.client.mesh.DragonMesh;
 import yesman.epicfight.client.renderer.EpicFightRenderTypes;
 import yesman.epicfight.client.renderer.LightningRenderHelper;
 import yesman.epicfight.client.renderer.patched.entity.PEnderDragonRenderer;
@@ -32,7 +32,7 @@ import yesman.epicfight.world.capabilities.entitypatch.boss.enderdragon.EnderDra
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(value = PEnderDragonRenderer.class,remap = false)
-public abstract class MixinPEnderDragonRenderer extends PatchedEntityRenderer<EnderDragon, EnderDragonPatch, EnderDragonRenderer> {
+public abstract class MixinPEnderDragonRenderer extends PatchedEntityRenderer<EnderDragon, EnderDragonPatch, EnderDragonRenderer, DragonMesh> {
 
     @Shadow protected abstract int getOverlayCoord(EnderDragon entity, EnderDragonPatch entitypatch, float partialTicks);
 
@@ -41,32 +41,37 @@ public abstract class MixinPEnderDragonRenderer extends PatchedEntityRenderer<En
     private static final ResourceLocation DRAGON_EYE_LOCATION = new ResourceLocation("textures/entity/enderdragon/dragon_eyes.png");
 
 
+    /**
+     * @author
+     * @reason
+     */
     @Overwrite
     public void render(EnderDragon entityIn, EnderDragonPatch entitypatch, EnderDragonRenderer renderer, MultiBufferSource buffer, PoseStack poseStack, int packedLight, float partialTicks) {
-        ClientModel model = (ClientModel)entitypatch.getEntityModel(ClientModels.LOGICAL_CLIENT);
-        Armature armature = model.getArmature();
+        DragonMesh mesh = this.getMesh(entitypatch);
+        Armature armature = entitypatch.getArmature();
         poseStack.pushPose();
         this.mulPoseStack(poseStack, armature, entityIn, entitypatch, partialTicks);
         OpenMatrix4f[] poses = this.getPoseMatrices(entitypatch, armature, partialTicks);
+        poses[0] = OpenMatrix4f.rotate(-90.0F, Vec3f.X_AXIS, poses[0], (OpenMatrix4f)null);
         float deathTimeProgression;
         VertexConsumer lightningBuffer;
         if (entityIn.dragonDeathTime > 0) {
             poseStack.translate(entityIn.getRandom().nextGaussian() * 0.08, 0.0, entityIn.getRandom().nextGaussian() * 0.08);
             deathTimeProgression = ((float)entityIn.dragonDeathTime + partialTicks) / 200.0F;
-            lightningBuffer = buffer.getBuffer(EpicFightRenderTypes.dragonExplosionAlphaTriangles(DRAGON_EXPLODING_LOCATION));
-            model.drawAnimatedModel(poseStack, lightningBuffer, packedLight, 1.0F, 1.0F, 1.0F, deathTimeProgression, OverlayTexture.NO_OVERLAY, poses);
-            VertexConsumer builder2 = buffer.getBuffer(EpicFightRenderTypes.entityDecalTriangles(DRAGON_LOCATION));
-            model.drawAnimatedModel(poseStack, builder2, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, this.getOverlayCoord(entityIn, entitypatch, partialTicks), poses);
+            lightningBuffer = buffer.getBuffer(EpicFightRenderTypes.triangles(RenderType.dragonExplosionAlpha(DRAGON_EXPLODING_LOCATION)));
+            mesh.drawModelWithPose(poseStack, lightningBuffer, packedLight, 1.0F, 1.0F, 1.0F, deathTimeProgression, OverlayTexture.NO_OVERLAY, armature, poses);
+            VertexConsumer builder2 = buffer.getBuffer(EpicFightRenderTypes.triangles(RenderType.entityDecal(DRAGON_LOCATION)));
+            mesh.drawModelWithPose(poseStack, builder2, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, this.getOverlayCoord(entityIn, entitypatch, partialTicks), armature, poses);
         } else {
-            VertexConsumer builder = buffer.getBuffer(EpicFightRenderTypes.animatedModel(DRAGON_LOCATION));
-            model.drawAnimatedModel(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, this.getOverlayCoord(entityIn, entitypatch, partialTicks), poses);
-            VertexConsumer builder2 = buffer.getBuffer(DragonFightRenderType.eyes(DRAGON_EYE_LOCATION));
-            model.drawAnimatedModel(poseStack, builder2, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, OverlayTexture.NO_OVERLAY,poses);
+            VertexConsumer builder = buffer.getBuffer(EpicFightRenderTypes.triangles(RenderType.entityCutoutNoCull(DRAGON_LOCATION)));
+            mesh.drawModelWithPose(poseStack, builder, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, this.getOverlayCoord(entityIn, entitypatch, partialTicks), armature, poses);
+            VertexConsumer builder2 = buffer.getBuffer(EpicFightRenderTypes.triangles(DragonFightRenderType.eyes(DRAGON_EYE_LOCATION)));
+            mesh.drawModelWithPose(poseStack, builder2, packedLight, 1.0F, 1.0F, 1.0F, 1.0F, this.getOverlayCoord(entityIn, entitypatch, partialTicks), armature, poses);
         }
 
         int density;
         if (Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes()) {
-            Layer.Priority[] var18 = Layer.Priority.values();
+            Layer.Priority[] var18 = Layer.Priority.HIGHEST.lowers();
             int var19 = var18.length;
 
             for(density = 0; density < var19; ++density) {
@@ -96,7 +101,6 @@ public abstract class MixinPEnderDragonRenderer extends PatchedEntityRenderer<En
             LightningRenderHelper.renderCyclingLight(lightningBuffer, poseStack, 255, 0, 255, density, 1.0F, deathTimeProgression, f7);
             poseStack.popPose();
         }
-
     }
 
 }
